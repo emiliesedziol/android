@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     void numberGenerator() {
         Random r = new Random();
         int low = 1;
-        int high = 99;
+        int high = 999;
         mResult = r.nextInt(high) + low;
 
         Log.d(TAG, "new number: " + mResult);

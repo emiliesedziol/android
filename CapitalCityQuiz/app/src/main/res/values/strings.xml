@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Capital City Quiz</string>
+    <string name="cincinnati_city">Cincinnati</string>
+    <string name="london_england">London</string>
+</resources>

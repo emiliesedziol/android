@@ -2,4 +2,8 @@
     <string name="app_name">Capital City Quiz</string>
     <string name="cincinnati_city">Cincinnati</string>
     <string name="london_england">London</string>
+    <string name="quiz_aborted">abort</string>
+    <string name="abort_confirmation">confirmation</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 </resources>

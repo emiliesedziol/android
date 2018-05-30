@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 public class GameActivity extends Activity {
 
+    static final String CURRENT_QUESTION_INDEX = "index";
+    static final String CURRENT_CORRECT_SCORE = "correct_score";
+    static final String CURRENT_WRONG_SCORE = "wrong_score";
+    static final String CURRENT_SKIP_SCORE = "skip_score";
+
     QuizQuestion[] mQuestion = new QuizQuestion[5];
 
     int mNumberOfQuestions = 0;
@@ -34,6 +39,12 @@ public class GameActivity extends Activity {
         mQuestionTextView = findViewById(R.id.questionTextView);
         mProgressTextView = findViewById(R.id.progressTextView);
 
+        // if the phone is rotated a new instance is created
+        // the following is to use the saved instance created before rotation
+        if (savedInstanceState != null) {
+
+            restoreData(savedInstanceState);
+        }
         updateQuestion();
         Button yesButton = findViewById(R.id.yesButton);
         yesButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +98,14 @@ public class GameActivity extends Activity {
         enableAbortButton();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // persist data
+
+        persistData(savedInstanceState);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     void initialiseQuestions() {
         mQuestion[0] = new QuizQuestion("Is Paris the capital of France?", true );
 
@@ -129,14 +148,17 @@ public class GameActivity extends Activity {
     void updateScores(boolean quizOver) {
         String scoreText;
         if (quizOver) {
-            scoreText = "Final Score";
+            scoreText = getResources().getString(R.string.final_score);
         }
         else {
-            scoreText = "Current Score";
+            scoreText = getResources().getString(R.string.current_score);
         }
-        scoreText = scoreText + "\n\n" + "Correct Answers = " + Integer.toString(mNumberCorrectAnswers) +
-            "\n" + "Wrong Answers = " + Integer.toString(mNumberOfWrongAnswers)+
-            "\n" + "Skipped Questions = " + Integer.toString(mNumberSkippedAnswers);
+        scoreText = scoreText + "\n\n" + getResources().getString(R.string.correct_answers)
+                + Integer.toString(mNumberCorrectAnswers) +
+            "\n" + getResources().getString(R.string.wrong_answers)
+                + Integer.toString(mNumberOfWrongAnswers)+
+            "\n" + getResources().getString(R.string.skipped_answers)
+                + Integer.toString(mNumberSkippedAnswers);
         mScoreTextView.setText(scoreText);
     }
 
@@ -145,7 +167,9 @@ public class GameActivity extends Activity {
     }
 
     void updateProgress() {
-        String progress = "Question: " + Integer.toString(mCurrentQuestionIndex + 1) + "/" +
+        String progress = getResources().getString(R.string.question) +
+                Integer.toString(mCurrentQuestionIndex + 1) +
+                getResources().getString(R.string.delimiter)+
                 Integer.toString(mNumberOfQuestions);
         mProgressTextView.setText(progress);
     }
@@ -202,5 +226,22 @@ public class GameActivity extends Activity {
     void disableAbortButton() {
         mAbortButton.setClickable(false);
         mAbortButton.setAlpha(0.25f);
+    }
+
+    void persistData(Bundle savedInstanceData) {
+
+        //Save scores and index for the current question into instance data
+        savedInstanceData.putInt(CURRENT_QUESTION_INDEX, mCurrentQuestionIndex);
+        savedInstanceData.putInt(CURRENT_CORRECT_SCORE, mNumberCorrectAnswers);
+        savedInstanceData.putInt(CURRENT_WRONG_SCORE, mNumberOfWrongAnswers);
+        savedInstanceData.putInt(CURRENT_SKIP_SCORE, mNumberSkippedAnswers);
+
+    }
+
+    void restoreData(Bundle saveInstanceData) {
+        mCurrentQuestionIndex = saveInstanceData.getInt(CURRENT_QUESTION_INDEX);
+        mNumberCorrectAnswers = saveInstanceData.getInt(CURRENT_CORRECT_SCORE);
+        mNumberOfWrongAnswers = saveInstanceData.getInt(CURRENT_WRONG_SCORE);
+        mNumberSkippedAnswers = saveInstanceData.getInt(CURRENT_SKIP_SCORE);
     }
 }

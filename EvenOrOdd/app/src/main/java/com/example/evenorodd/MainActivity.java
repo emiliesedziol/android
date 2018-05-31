@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     mDisplayResult.setTextColor(Color.BLUE);
                 }
                 changeGuessButtonState(false);
-                changeAgainButtonState();
+                changeAgainButtonState(true);
             }
         });
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     mDisplayResult.setTextColor(Color.parseColor("#ff0000"));
                 }
                 changeGuessButtonState(false);
-                changeAgainButtonState();
+                changeAgainButtonState(true);
             }
         });
 
@@ -82,22 +82,26 @@ public class MainActivity extends AppCompatActivity {
                 mDisplayResult.setText("NEW Number, is it even or odd??");
 
                 mDisplayResult.setTextColor(Color.parseColor("#000000"));
-                changeGuessButtonState(true);
-
                 mOddButton.setBackgroundColor(Color.parseColor("#00bfff"));
                 mOddButton.setTextColor(Color.BLACK);
+                mOddButton.setClickable(true);
 
                 mEvenButton.setBackgroundColor(Color.parseColor("#00bfff"));
                 mEvenButton.setTextColor(Color.BLACK);
+                mEvenButton.setClickable(true);
 
                 mAgainButton.setBackgroundColor(Color.BLACK);
                 mAgainButton.setTextColor(Color.WHITE);
+
+                changeAgainButtonState(false);
+
             }
         });
 
         // generate first number
         numberGenerator();
         mDisplayNumber.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 100);
+
     }
 
     // method to generate a random number
@@ -132,11 +136,12 @@ public class MainActivity extends AppCompatActivity {
 /*        float alphaValue = .75f;
         if (enable) {
             alphaValue = 1.0f;
-        }
+        } */
         mEvenButton.setClickable(enable);
-        mEvenButton.setAlpha(alphaValue);
+       // mEvenButton.setAlpha(alphaValue);
         mOddButton.setClickable(enable);
-        mOddButton.setAlpha(alphaValue);  */
+      //  mOddButton.setAlpha(alphaValue);
+        mAgainButton.setClickable(!enable);
 
         mOddButton.setBackgroundColor(Color.BLACK);
         mOddButton.setTextColor(Color.WHITE);
@@ -144,8 +149,15 @@ public class MainActivity extends AppCompatActivity {
         mEvenButton.setTextColor(Color.WHITE);
 
     }
-    void changeAgainButtonState() {
-        mAgainButton.setBackgroundColor(Color.parseColor("#00bfff"));
-        mAgainButton.setTextColor(Color.WHITE);
+    void changeAgainButtonState(boolean enable) {
+        if (enable) {
+            mAgainButton.setBackgroundColor(Color.parseColor("#00bfff"));
+            mAgainButton.setTextColor(Color.WHITE);
+        }
+        else {
+            mAgainButton.setBackgroundColor(Color.BLACK);
+            mAgainButton.setTextColor(Color.WHITE);
+        }
+        mAgainButton.setClickable(enable);
     }
 }

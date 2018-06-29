@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mResultsText = findViewById(R.id.resultsTextView);
+        setResultText(getString(R.string.pressPlay));
         clearBoard();
 
         createCellState();
@@ -170,35 +172,181 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         String winnerText;
 
                         if (stateBeforMove == GameState.NOUGHT_TURN) {
-                            winnerText = "Nought won";
+                            winnerText = getString(R.string.oWon);
                         } else {
-                            winnerText = "cross won";
+                            winnerText = getString(R.string.xWon);
                         }
                         setResultText(winnerText);
+                        resetForNewGame();
                     }
                     else {
                         goCount++;
 
                         if (goCount == 9) {
                             // no winners
+                            resetForNewGame();
                         }
                     }
                     break;
                 case CROSS_PLAYED:
                     Log.d(TAG, "cross played");
+                    Toast.makeText(getApplicationContext(), R.string.xAlreadyPlayed, Toast.LENGTH_SHORT).show();
                     break;
                 case NOUGHT_PLAYED:
                     Log.d(TAG, "nought played");
+                    Toast.makeText(getApplicationContext(), R.string.oAlreadyPlayed, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
         else {
-
+            Toast.makeText(getApplicationContext(), R.string.play, Toast.LENGTH_SHORT).show();
         }
     }
 
     void checkForWinner(int cellNumber) {
+        switch (cellNumber) {
+            case 1:
+                if (checkRow(0)) {
+                    break;
+                } else if (checkColumn(0)) {
+                    break;
+                } else if (checkDiagonalLeftRightDown()) {
+                    break;
+                }
+                break;
 
+            case 2:
+                if (checkRow(0)) {
+                    break;
+                } else if (checkColumn(1)) {
+                    break;
+                }
+                break;
+
+            case 3:
+                if (checkRow(0)) {
+                    break;
+                } else if (checkColumn(2)) {
+                    break;
+                } else if (checkDiagonalLeftRightUp()) {
+                    break;
+                }
+                break;
+
+            case 4:
+                if (checkRow(3)) {
+                    break;
+                } else if (checkColumn(0)) {
+                    break;
+                }
+                break;
+
+            case 5:
+                if (checkRow(3)) {
+                    break;
+                } else if (checkColumn(1)) {
+                    break;
+                } else if (checkDiagonalLeftRightUp()) {
+                    break;
+                }
+                break;
+
+            case 6:
+                if (checkRow(3)) {
+                    break;
+                } else if (checkColumn(2)) {
+                    break;
+                }
+                break;
+
+            case 7:
+                if (checkRow(6)) {
+                    break;
+                } else if (checkColumn(0)) {
+                    break;
+                } else if (checkDiagonalLeftRightUp()) {
+                    break;
+                }
+                break;
+
+            case 8:
+                if (checkRow(6)) {
+                    break;
+                } else if (checkColumn(1)) {
+                    break;
+                }
+                break;
+
+            case 9:
+                if (checkRow(6)) {
+                    break;
+                } else if (checkColumn(2)) {
+                    break;
+                } else if (checkDiagonalLeftRightDown()) {
+                    break;
+                }
+                break;
+        }
+    }
+
+    // Look for a win by row
+    boolean checkRow(int firstCell) {
+        boolean allTheSame = false;
+
+        // Check block of 3 cells in row, always from first given one
+        if (mCellPlayedStates[firstCell].getCurrentState() == mCellPlayedStates[firstCell + 1].getCurrentState() &&
+                mCellPlayedStates[firstCell].getCurrentState() == mCellPlayedStates[firstCell + 2].getCurrentState()) {
+            allTheSame = true;
+
+            mCurrentGameState = GameState.GAME_WON;
+        }
+
+        return allTheSame;
+    }
+
+    // Look for a win by column
+    boolean checkColumn(int firstCell) {
+        boolean allTheSame = false;
+
+        // Check block of 3 cells in column, always from first given one
+        if (mCellPlayedStates[firstCell].getCurrentState() == mCellPlayedStates[firstCell + 3].getCurrentState() &&
+                mCellPlayedStates[firstCell].getCurrentState() == mCellPlayedStates[firstCell + 6].getCurrentState()) {
+            allTheSame = true;
+
+            mCurrentGameState = GameState.GAME_WON;
+        }
+
+        return allTheSame;
+    }
+
+    // Look for a win by diagonal up
+    boolean checkDiagonalLeftRightDown() {
+        boolean allTheSame = false;
+
+        // Always same cells
+        if (mCellPlayedStates[0].getCurrentState() == mCellPlayedStates[4].getCurrentState() &&
+                mCellPlayedStates[0].getCurrentState() == mCellPlayedStates[8].getCurrentState()) {
+            allTheSame = true;
+
+            mCurrentGameState = GameState.GAME_WON;
+        }
+
+        return allTheSame;
+    }
+
+    // Look for a win by diagonal down
+    boolean checkDiagonalLeftRightUp() {
+        boolean allTheSame = false;
+
+        // Always same cells
+        if (mCellPlayedStates[6].getCurrentState() == mCellPlayedStates[4].getCurrentState() &&
+                mCellPlayedStates[6].getCurrentState() == mCellPlayedStates[2].getCurrentState()) {
+            allTheSame = true;
+
+            mCurrentGameState = GameState.GAME_WON;
+        }
+
+        return allTheSame;
     }
 
     void setupCellButton(ImageButton cellButton) {
@@ -239,5 +387,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < 9; i++) {
             mCellPlayedStates[i].setCurrentState(CellPlayedStatus.CellStatus.NOT_PLAYED);
         }
+    }
+
+    void resetForNewGame() {
+        mCurrentGameState = GameState.GAME_OVER;
+        resetCellStates();
+        mPlayButton.setVisibility(View.VISIBLE);
+        goCount = 0;
+
     }
 }

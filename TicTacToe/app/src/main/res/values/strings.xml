@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TicTacToe</string>
+    <string name="pressPlay">Press Play to start</string>
+    <string name="oWon">Nought won</string>
+    <string name="xWon">cross won</string>
+    <string name="xAlreadyPlayed">Already Played</string>
+    <string name="oAlreadyPlayed">Already Played</string>
+    <string name="play">Press Play</string>
 </resources>

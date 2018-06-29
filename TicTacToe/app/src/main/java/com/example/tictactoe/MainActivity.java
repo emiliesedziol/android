@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         if (goCount == 9) {
                             // no winners
+                            setResultText(getString(R.string.noWinner));
                             resetForNewGame();
                         }
                     }

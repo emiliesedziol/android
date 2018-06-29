@@ -18,4 +18,5 @@
     <string name="playA">Play</string>
     <string name="lines_of_board">lines of board</string>
     <string name="image2">image2</string>
+    <string name="noWinner">no one won</string>
 </resources>

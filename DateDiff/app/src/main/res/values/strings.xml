@@ -6,4 +6,5 @@
     <string name="enterDateOne">Enter Date 1</string>
     <string name="enterDateTwo">Enter Date 2</string>
     <string name="calculateButton">Calculate</string>
+    <string name="diffText">Display difference</string>
 </resources>

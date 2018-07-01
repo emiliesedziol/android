@@ -15,4 +15,12 @@
         <item name="android:textSize">32sp</item>
         <item name="android:padding">2dip</item>
     </style>
+
+    <style name="fontDiffDisplay">
+        <item name="android:text">bold</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textColor">#ff0000</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:padding">2dip</item>
+    </style>
 </resources>

@@ -14,6 +14,10 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Button mButtonDateOne;
     Button mButtonDateTwo;
     Button mButtonCalculate;
+    TextView mDiffTextView;
 
     @SuppressLint("ResourceType")
     @Override
@@ -118,15 +123,64 @@ public class MainActivity extends AppCompatActivity {
         mButtonCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                setDateDiff(getDiffInDays());
+
                 Log.d(TAG, "calculate button clicked");
             }
         });
         mainLinearLayout.addView(mButtonCalculate);
+
+        // calculate display difference in a textView
+        mDiffTextView = new TextView(this);
+ //       mDiffTextView.setText(getResources().getString(R.string.diffText));
+        TextViewCompat.setTextAppearance(mDiffTextView, R.style.fontDiffDisplay);
+        mDiffTextView.setPadding(100, 40, 100, 20);
+        mDiffTextView.setGravity(Gravity.CENTER);
+        mainLinearLayout.addView(mDiffTextView);
+
+
+
         setContentView(mainLinearLayout);
     }
 
     // set date for a button
     void setTextCurrentDateButton(String dateText) {
         mCurrentDateButton.setText(dateText);
+    }
+
+    int getDiffInDays() {
+        int diffDays = 0;
+
+        // both java and android has a simpleDateFormat, Java is being used
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm/dd/yyyy");
+
+        try {
+            java.util.Date dateOne = simpleDateFormat.parse(mButtonDateOne.getText().toString());
+            java.util.Date dateTwo = simpleDateFormat.parse(mButtonDateTwo.getText().toString());
+
+            diffDays = (int) ((dateTwo.getTime() - dateOne.getTime()) / (1000 * 60 * 60 * 24));
+        } catch (ParseException e) {
+            Log.d(TAG, "problem with one or both dates");
+        }
+
+        return diffDays;
+    }
+    void setDateDiff(int diff) {
+        String diffText;
+
+        if (diff == 0) {
+            diffText = "Same Date";
+        }
+        else {
+            diffText = "Difference " + Integer.toString(diff) + " ";
+            if (diff > 1) {
+                diffText += "days";
+            }
+            else {
+                diffText += "hmmmm";
+            }
+        }
+        mDiffTextView.setText(diffText);
     }
 }

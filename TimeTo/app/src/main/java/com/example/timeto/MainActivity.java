@@ -1,5 +1,6 @@
 package com.example.timeto;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -53,9 +54,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String temp = " Row clicked -> " + Integer.toString(position + 1);
+                Log.d(TAG, temp);
+               // Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
-            }
+                Bundle theBundle = new Bundle();
+                theBundle.putInt("rowId", position);
+
+                Intent theIntent = new Intent(MainActivity.this, EventActivity.class);
+                theIntent.putExtras(theBundle);
+                startActivity(theIntent);
+;            }
         });
 
     }

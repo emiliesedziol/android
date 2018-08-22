@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     void loadNewPic() {
         // note app/manifests/AndroidManifest.xml must contain:
         //  <uses-permission android:name="android.permission.INTERNET" />
-        mTheCatWebView.loadUrl("https://www.thecatapi.com/api/images/get?type=jpg&size=small");
+       mTheCatWebView.loadUrl("https://api.thecatapi.com/v1/images/search?format=src&mime_types=image/gif");
+    //    mTheCatWebView.loadUrl("https://www.thecatapi.com/api/images/get?type=jpg&size=small");
     }
 }
 
